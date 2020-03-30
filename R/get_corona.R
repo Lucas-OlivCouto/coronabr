@@ -14,6 +14,8 @@
 #' @importFrom dplyr bind_rows
 #' @importFrom dplyr left_join
 #' @importFrom rlang .data
+#' @importFrom utils read.csv
+#' @importFrom utils write.csv
 #' @import magrittr
 #' @import plyr
 #'
@@ -36,14 +38,18 @@ get_corona <- function(dir = "output/",
   #format estados new
   covid_estados_new <-
     dplyr::left_join(covid_estados, estados) %>%
-    dplyr::rename(cases = qtd_confirmado) %>%
-    dplyr::select(nome, codigo, geocode, updatedAt, cases) %>%
-    dplyr::mutate(date =  as.Date(updatedAt)) %>%
-    dplyr::select(-updatedAt)
+    dplyr::rename(cases = .data$qtd_confirmado) %>%
+    dplyr::select(.data$nome,
+                  .data$codigo,
+                  .data$geocode,
+                  .data$updatedAt,
+                  .data$cases) %>%
+    dplyr::mutate(date =  as.Date(.data$updatedAt)) %>%
+    dplyr::select(-.data$updatedAt)
 
   new_df <-
     dplyr::bind_rows(minsaude, covid_estados_new) %>%
-    distinct(nome, cases, )
+    dplyr::distinct()
 
    message(paste0("salvando ", filename, ".csv em ", dir))
    if (!dir.exists(dir)) {
