@@ -4,8 +4,9 @@
 #download.file(
 #  "https://raw.githubusercontent.com/belisards/coronabr/master/dados/corona_brasil.csv",
 #  destfile = "data-raw/minsaude_bel.csv")
+library(dplyr)
 estados <- read.csv("data-raw/estados_code.csv", row.names = 1)
-minsaude <- read.csv("data-raw/minsaude_bel.csv") %>%
+minsaude <- read.csv("data-raw/minsaude_raw.csv") %>%
   rename(geocode = uid) %>%
   arrange(date) %>%
   left_join(estados) %>%

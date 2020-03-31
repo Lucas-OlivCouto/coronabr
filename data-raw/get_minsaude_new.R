@@ -1,4 +1,4 @@
-
+library(dplyr)
 get_corona_minsaude <- function(write = FALSE) {
   url <- "https://xx9p7hp1p7.execute-api.us-east-1.amazonaws.com/prod/"
   endpoints <- c("PortalGeral",

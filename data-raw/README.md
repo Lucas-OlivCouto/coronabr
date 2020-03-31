@@ -33,3 +33,5 @@ São dados diários, uma lista com 6 elementos
 __A discriminação por tipo de caso e o número de óbitos por estado não se encontra mais disponível. __
 
 A função `get_corona()` formata esses dados para uso interno do pacote e unifica as diferentes fontes de dados relativas ao ministério da saúde.
+
+Nota: os scripts que geram os dados estão salvos na pasta `data-raw` mas estão escritos para serem rodados em sessão interativa na raíz do pacote - sem mudar de pasta de trabalho #boaspráticas
