@@ -23,12 +23,12 @@ O script que permite obter esses dados foi escrito por Julio Recenti e se encont
 
 São dados diários, uma lista com 6 elementos
 
--PortalGeral - Número total de casos e óbitos
--PortalRegiao - Número de casos por região do Brasil
--PortalSemana - Número de casos por semana epidemiológica
--PortalDias - Número de casos por dia
--PortalAcumulo - Número acumulado de casos
--PortalMapa - Dados por Estado (cria o mapa)
+- PortalGeral - Número total de casos e óbitos
+- PortalRegiao - Número de casos por região do Brasil
+- PortalSemana - Número de casos por semana epidemiológica
+- PortalDias - Número de casos por dia
+- PortalAcumulo - Número acumulado de casos
+- PortalMapa - Dados por Estado (cria o mapa)
 
 __A discriminação por tipo de caso e o número de óbitos por estado não se encontra mais disponível. __
 
