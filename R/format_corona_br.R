@@ -9,7 +9,7 @@
 #'
 #'
 format_corona_br <- function(df,
-                             filename = "corona_brasil_formated",
+                             filename = "corona_brasil_formatted",
                              dir = "output"){
   datas <- expand.grid(date =  seq(min(df$date), max(df$date), by = 1),
                        city_ibge_code = unique(df$city_ibge_code))
