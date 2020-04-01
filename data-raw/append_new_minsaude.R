@@ -10,9 +10,12 @@ minsaude <-
   dplyr::left_join(estados) %>%
   dplyr::mutate(date = as.Date(date))
 
+#faz download dos dados mais recentes
+source("data-raw/get_minsaude_new.R")
 #I am working from the root of the package so there's "data-raw/" everywhere
 #pega os objetos .rda que a função do julio criou. see readme.
 daily <- list.files("data-raw", pattern = ".rda$", full.names = T)
+daily
 #carrega um a um e junta com os dados antigos (minsaude, linha 8)
 
 for (i in seq_along(daily)) {
@@ -58,6 +61,7 @@ for (i in seq_along(daily)) {
                    row.names = FALSE)
   #para controlar o loop
   minsaude <- new_df
+  message(pander::pander(covid_estados_new %>% count(date)))
 }
   #estou pensando que latest é o que deveria entrar nos plots.
   #mas estou ciente de que estou em data-raw, isto deveria sair pro corpo do pacote (get_corona já faz isso mas não resolve o append)
