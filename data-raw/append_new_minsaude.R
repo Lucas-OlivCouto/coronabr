@@ -61,7 +61,7 @@ for (i in seq_along(daily)) {
                    row.names = FALSE)
   #para controlar o loop
   minsaude <- new_df
-  message(pander::pander(covid_estados_new %>% count(date)))
+  message(pander::pander(covid_estados_new %>% dplyr::count(date)))
 }
   #estou pensando que latest é o que deveria entrar nos plots.
   #mas estou ciente de que estou em data-raw, isto deveria sair pro corpo do pacote (get_corona já faz isso mas não resolve o append)
