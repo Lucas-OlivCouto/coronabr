@@ -4,58 +4,53 @@
 #' (disponível em: 'https://covid.saude.gov.br/') e salva o resultado no disco.
 #'
 #' @param dir Diretório onde salvar o arquivo
-#' @param filename Nome do arquivo
+#' @param filename Nome do arquivo, valor predeterminado "minsaude"
+#' @param uf Caractere indicando a abreviação do(s) estado(s) brasileiro(s)
 #'
-#' @importFrom rvest html_text
-#' @importFrom stringr str_split
-#' @importFrom jsonlite fromJSON
 #' @importFrom utils write.csv
-#' @importFrom dplyr mutate_if
-#' @importFrom dplyr bind_rows
-#' @importFrom dplyr left_join
+#' @importFrom dplyr mutate_if bind_rows left_join
 #' @importFrom rlang .data
-#' @importFrom utils read.csv
-#' @importFrom utils write.csv
-#' @import magrittr
-#' @import plyr
+#' @importFrom utils read.csv write.csv
+#' @importFrom magrittr %>%
+#' @importFrom plyr .
+#' @importFrom lubridate as_date
 #'
 #' @export
 #'
-get_corona <- function(dir = "output/",
-                       filename = "corona_minsaude") {
+get_corona <- function(dir = "output",
+                       filename = "minsaude",
+                       uf = NULL) {
   rlang::.data #para usar vars no dplyr
   #get original data and format it
-  estados <- read.csv("./data-raw/estados_code.csv", row.names = 1)
-  minsaude <-
-    read.csv("./data-raw/minsaude_formatted.csv", row.names = 1) %>%
-    dplyr::left_join(estados) %>%
-    dplyr::mutate(date = as.Date(date))
-
-  covid_br <- get_corona_minsaude()
-  #formatting only estados
-  covid_estados <- covid_br$PortalMapa
-  #estados deveria ser data. nao tem uma pasta com dados, aliñas
-  #format estados new
-  covid_estados_new <-
-    dplyr::left_join(covid_estados, estados) %>%
-    dplyr::rename(cases = .data$qtd_confirmado) %>%
-    dplyr::select(.data$nome,
-                  .data$codigo,
-                  .data$geocode,
-                  .data$updatedAt,
-                  .data$cases) %>%
-    dplyr::mutate(date =  as.Date(.data$updatedAt)) %>%
-    dplyr::select(-.data$updatedAt)
-
-  new_df <-
-    dplyr::bind_rows(minsaude, covid_estados_new) %>%
-    dplyr::distinct()
+  url <- "https://covid.saude.gov.br"
+  date <- format(Sys.Date(), "%Y%m%d")
+  res <- utils::read.csv2(
+    paste0("https://covid.saude.gov.br/assets/files/COVID19_",
+           date,
+           ".csv"))
+  res <- res %>% dplyr::mutate(date = lubridate::as_date(as.character(data),
+                                           tz = "America/Sao_Paulo",
+                                           format = "%d/%m/%Y")) %>%
+    dplyr::select(-data)
+  # gravando metadados da requisicao
+  metadado <- data.frame(intervalo = paste(range(res$date), collapse = ";"),
+                         fonte = url,
+                         acesso_em = Sys.Date())
+  if (!is.null(uf)) {
+    res <- res %>% dplyr::filter(estado %in% uf)
+  }
 
    message(paste0("salvando ", filename, ".csv em ", dir))
    if (!dir.exists(dir)) {
      dir.create(dir)
    }
-  utils::write.csv(new_df, paste0(dir, filename, ".csv"),
+   utils::write.csv(res,
+                    paste0(dir, "/", filename,
+                           paste(uf, collapse = "-"), ".csv"),
                     row.names = FALSE)
-  return(new_df)
+   utils::write.csv(metadado,
+                    paste0(dir, "/", "metadado_minsaude",
+                           paste(uf, collapse = "-"), ".csv"),
+                    row.names = FALSE)
+   return(res)
 }

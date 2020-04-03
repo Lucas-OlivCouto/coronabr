@@ -2,15 +2,18 @@
 % Please edit documentation in R/get_corona.R
 \name{get_corona}
 \alias{get_corona}
-\title{Extrai dados de corona vírus para o Brasil}
+\title{Extrai dados de coronavírus para o Brasil}
 \usage{
-get_corona(dir = "output/", filename = "corona_brasil")
+get_corona(dir = "output", filename = "minsaude", uf = NULL)
 }
 \arguments{
 \item{dir}{Diretório onde salvar o arquivo}
 
-\item{filename}{Nome do arquivo}
+\item{filename}{Nome do arquivo, valor predeterminado "minsaude"}
+
+\item{uf}{Caractere indicando a abreviação do(s) estado(s) brasileiro(s)}
 }
 \description{
-Esta função extrai os valores compilados pelo ministério da Saúde do Brasil (disponível em: 'http://plataforma.saude.gov.br/novocoronavirus/#COVID-19-brazil') e salva o resultado no disco.
+Esta função extrai os valores compilados pelo ministério da Saúde do Brasil
+(disponível em: 'https://covid.saude.gov.br/') e salva o resultado no disco.
 }
