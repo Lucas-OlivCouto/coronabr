@@ -17,9 +17,9 @@
 #'
 #' @export
 #'
-get_corona <- function(dir = "output",
-                       filename = "minsaude",
-                       uf = NULL) {
+get_corona_minsaude <- function(dir = "output",
+                                filename = "minsaude",
+                                uf = NULL) {
   rlang::.data #para usar vars no dplyr
   #get original data and format it
   url <- "https://covid.saude.gov.br"
